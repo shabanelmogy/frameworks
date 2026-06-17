@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Learn</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #0d1117;
+      }
+      .app-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0d1117;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #c9d1d9;
+        z-index: 9999;
+      }
+      .loader-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .loader-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-icon {
+        font-size: 2.5rem;
+        animation: pulse 1.5s infinite ease-in-out;
+      }
+      .logo-title {
+        margin: 0;
+        font-size: 2.2rem;
+        font-weight: 800;
+        background: linear-gradient(45deg, #58a6ff, #bc8cff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.5px;
+      }
+      .loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(88, 166, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: #58a6ff;
+        border-right-color: #bc8cff;
+        animation: spin 1s infinite linear;
+      }
+      .loader-text {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #8b949e;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-weight: 600;
+        animation: fade 1.5s infinite ease-in-out;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+      @keyframes fade {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="app-loader">
+        <div class="loader-content">
+          <div class="loader-logo">
+            <span class="logo-icon">⚛️</span>
+            <h1 class="logo-title">React Learn</h1>
+          </div>
+          <div class="loader-spinner"></div>
+          <p class="loader-text">Loading application...</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

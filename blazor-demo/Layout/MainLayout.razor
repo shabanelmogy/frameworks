@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+
+<div class="app-layout">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Blazor Learn</h2>
+        </div>
+        <NavMenu />
+    </div>
+
+    <div class="main-content">
+        <header class="top-bar">
+            <h1>Welcome to Blazor WebAssembly!</h1>
+            <p>Select a lesson from the sidebar to start learning.</p>
+        </header>
+        
+        <div class="content-wrapper">
+            @Body
+        </div>
+    </div>
+</div>

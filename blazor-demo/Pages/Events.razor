@@ -1,0 +1,170 @@
+@page "/events"
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<div class="lesson-container">
+    <h2>Event Listeners in Blazor</h2>
+    <p class="lesson-intro">In Blazor, you bind to DOM events using the <code>@@on{event}</code> syntax (e.g., <code>@@onclick</code>, <code>@@onkeyup</code>). This is equivalent to native <code>addEventListener</code>.</p>
+
+    <!-- 1. BASIC CLICK EVENT -->
+    <div class="example-card">
+        <h3>1. Basic Click Event <code>@@onclick</code></h3>
+        <p class="explanation">The most common event. Prefix the target event with the <code>@@</code> symbol.</p>
+        <div class="demo-box">
+            <button class="btn" @onclick="OnButtonClick">Click Me!</button>
+            <p>You clicked the button: <strong>@clickCount</strong> times.</p>
+        </div>
+    </div>
+
+    <!-- 2. PASSING THE EVENT OBJECT -->
+    <div class="example-card">
+        <h3>2. Passing the Event Object (KeyboardEventArgs)</h3>
+        <p class="explanation">Blazor automatically passes event arguments (like <code>KeyboardEventArgs</code>) to your event handler method.</p>
+        <div class="demo-box">
+            <p>Type below to see the last key pressed:</p>
+            <input type="text" class="input-field" @onkeyup="OnKeyup" placeholder="Type something..." />
+            <p>Last key: <span class="badge">@lastKeyPressed</span></p>
+        </div>
+    </div>
+
+    <!-- 3. KEY MODIFIERS -->
+    <div class="example-card">
+        <h3>3. Key Modifiers / Checking Key in Code</h3>
+        <p class="explanation">Instead of Angular-specific syntax like <code>(keyup.enter)</code>, Blazor handles this in standard C# logic by inspecting the key argument.</p>
+        <div class="demo-box">
+            <p>Type a message and press Enter to save:</p>
+            <input type="text" class="input-field" @bind="enterInput" @onkeyup="OnEnterKeyUp" placeholder="Press Enter to save..." />
+            @if (!string.IsNullOrEmpty(savedMessage))
+            {
+                <div style="color: #2ea043; margin-top: 10px;">Saved: @savedMessage</div>
+            }
+        </div>
+    </div>
+
+    <!-- 4. MOUSE EVENTS -->
+    <div class="example-card">
+        <h3>4. Mouse Events <code>@@onmouseenter / @@onmouseleave</code></h3>
+        <p class="explanation">React to mouse hover states easily using event bindings.</p>
+        <div class="demo-box" style="background-color: @boxColor; transition: all 0.3s ease; min-height: 50px; display: flex; align-items: center; justify-content: center;" @onmouseenter="OnMouseEnter" @onmouseleave="OnMouseLeave">
+            <p style="text-align: center; margin: 0; font-weight: bold;">@hoverStatus</p>
+        </div>
+    </div>
+
+    <!-- 5. FORM EVENTS -->
+    <div class="example-card">
+        <h3>5. Form Events <code>@@onfocus / @@onblur / @@oninput</code></h3>
+        <p class="explanation">Track input changes and focus states as they happen.</p>
+        <div class="demo-box">
+            <input type="text" class="input-field" @onfocus="OnFocus" @onblur="OnBlur" @oninput="OnInput" placeholder="Interact with me..." />
+            <p>Status: <span class="badge">@focusStatus</span></p>
+            <p>Current Value: <strong>@inputValue</strong></p>
+        </div>
+    </div>
+
+    <!-- 6. GLOBAL EVENTS -->
+    <div class="example-card">
+        <h3>6. Global Events (Window Resize via JS Interop)</h3>
+        <p class="explanation">In Blazor, we can bind to global window events using a small JS event listener that calls back to our C# component.</p>
+        <div class="demo-box">
+            <p>Resize your browser window to see this update:</p>
+            <p>Window width is: <span class="badge">@windowWidth px</span></p>
+        </div>
+    </div>
+
+    <!-- 7. CUSTOM EVENTS -->
+    <div class="example-card">
+        <h3>7. Custom Events <code>EventCallback</code></h3>
+        <p class="explanation">You can emit your own custom events for parent components to listen to using <code>EventCallback</code>.</p>
+        <div class="demo-box">
+            <button class="btn" @onclick="EmitCustomEvent">Emit Custom Event</button>
+            @if (!string.IsNullOrEmpty(customEventMessage))
+            {
+                <p style="color: #bc8cff; margin-top: 10px;">Event Emitted: <strong>@customEventMessage</strong></p>
+            }
+            <p style="font-size: 0.9em; color: #8b949e; margin-top: 10px;">(In a parent-child relationship, this triggers a method on the parent component)</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    // 1. Basic Click Event
+    private int clickCount = 0;
+    private void OnButtonClick() => clickCount++;
+
+    // 2. Passing the Event Object
+    private string lastKeyPressed = "None";
+    private void OnKeyup(KeyboardEventArgs e) => lastKeyPressed = e.Key;
+
+    // 3. Key Modifiers
+    private string enterInput = "";
+    private string savedMessage = "";
+    private void OnEnterKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            savedMessage = enterInput;
+            enterInput = "";
+        }
+    }
+
+    // 4. Mouse Events
+    private string hoverStatus = "Outside box";
+    private string boxColor = "#21262d";
+    private void OnMouseEnter()
+    {
+        hoverStatus = "Inside box!";
+        boxColor = "#58a6ff";
+    }
+    private void OnMouseLeave()
+    {
+        hoverStatus = "Outside box";
+        boxColor = "#21262d";
+    }
+
+    // 5. Form Events
+    private string focusStatus = "Not focused";
+    private string inputValue = "";
+    private void OnFocus() => focusStatus = "Focused!";
+    private void OnBlur() => focusStatus = "Lost focus";
+    private void OnInput(ChangeEventArgs e) => inputValue = e.Value?.ToString() ?? "";
+
+    // 6. Global Events (Window Resize)
+    private int windowWidth = 1024;
+    private DotNetObjectReference<Events>? objRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                window.blazorRegisterResize = function(helper) {
+                    helper.invokeMethodAsync('OnWindowResize', window.innerWidth);
+                    window.addEventListener('resize', function() {
+                        helper.invokeMethodAsync('OnWindowResize', window.innerWidth);
+                    });
+                };
+            ");
+            await JSRuntime.InvokeVoidAsync("blazorRegisterResize", objRef);
+        }
+    }
+
+    [JSInvokable]
+    public void OnWindowResize(int width)
+    {
+        windowWidth = width;
+        StateHasChanged();
+    }
+
+    // 7. Custom Events
+    private string customEventMessage = "";
+    private void EmitCustomEvent()
+    {
+        customEventMessage = "Hello from the custom event!";
+    }
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+    }
+}

@@ -1,0 +1,59 @@
+@page "/components"
+
+<div class="lesson-container">
+    <h2>Pages vs Components in Blazor</h2>
+    <p class="lesson-intro">In Blazor, there is no technical difference between a "Page" and a "Component". They are both just Razor components, but Pages have a <code>@@page</code> directive at the top!</p>
+
+    <div class="example-card">
+        <h3>The Conceptual Difference</h3>
+        <p class="explanation">
+            <strong>A "Page" (Smart Component):</strong> Is attached to a Route (like this one!). It manages state, fetches data, and handles layout. <br><br>
+            <strong>A "Component" (Dumb Component):</strong> Is reusable UI. It doesn't know about the URL. It just receives data via <code>[Parameter]</code> and emits events via <code>EventCallback</code>.
+        </p>
+        
+        <div class="demo-box" style="margin-top: 20px;">
+            <h3 style="color: white; margin-bottom: 1rem;">@PageTitle</h3>
+            
+            <!-- Loop through team members and render ProfileCard -->
+            @foreach (var member in TeamMembers)
+            {
+                <ProfileCard 
+                    Name="@member.Name" 
+                    Role="@member.Role"
+                    Initials="@member.Init"
+                    OnMessage="HandleMessage" />
+            }
+
+            @if (LastAction != "None")
+            {
+                <div class="status-bar">
+                    <span style="font-size: 1.2rem;">💬</span> @LastAction
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string PageTitle = "Team Roster";
+    private string LastAction = "None";
+
+    private List<MemberModel> TeamMembers = new()
+    {
+        new MemberModel { Name = "Alice Smith", Role = "Frontend Engineer", Init = "AS" },
+        new MemberModel { Name = "Bob Jones", Role = "Backend Engineer", Init = "BJ" },
+        new MemberModel { Name = "Charlie Brown", Role = "Designer", Init = "CB" }
+    };
+
+    private void HandleMessage(string name)
+    {
+        LastAction = $"You sent a message to {name}!";
+    }
+
+    public class MemberModel
+    {
+        public string Name { get; set; } = "";
+        public string Role { get; set; } = "";
+        public string Init { get; set; } = "";
+    }
+}

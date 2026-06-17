@@ -1,0 +1,78 @@
+@page "/services"
+@inject UsersService Users
+
+<div class="lesson-container">
+    <h2>Services & Data Fetching</h2>
+    <p class="lesson-intro">In Blazor, we fetch data using registered Services injected via the <code>@@inject</code> directive, keeping our UI components clean!</p>
+
+    <div class="example-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3>Mock API Users</h3>
+            <button class="btn-refresh" @onclick="FetchData" disabled="@isLoading">
+                Refresh Data
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading)
+        {
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Fetching users from JSONPlaceholder...</p>
+            </div>
+        }
+
+        <!-- Error State -->
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="error-state">
+                <p>⚠️ @error</p>
+            </div>
+        }
+
+        <!-- Loaded Users Grid -->
+        @if (!isLoading && string.IsNullOrEmpty(error) && users.Count > 0)
+        {
+            <div class="users-grid">
+                @foreach (var user in users)
+                {
+                    <div class="user-card" style="border-left-color: var(--accent); display: block;">
+                        <h4>@user.Name</h4>
+                        <p class="meta">Email: @user.Email</p>
+                        <p class="meta">Company: @user.Company.Name</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<User> users = new();
+    private bool isLoading = true;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    private async Task FetchData()
+    {
+        isLoading = true;
+        error = null;
+        try
+        {
+            users = await Users.GetUsersAsync();
+        }
+        catch (Exception ex)
+        {
+            error = "Failed to fetch users. Please try again.";
+            Console.WriteLine(ex);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

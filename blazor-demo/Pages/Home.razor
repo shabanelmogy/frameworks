@@ -1,0 +1,53 @@
+@page "/"
+@page "/overview"
+
+<PageTitle>Blazor Learn - Overview</PageTitle>
+
+<div class="lesson-container">
+    <h2>Welcome to Blazor Overview</h2>
+    <p class="lesson-intro">This learning application is designed to help you bridge your knowledge from React/Angular to modern Blazor WebAssembly.</p>
+
+    <div class="example-card">
+        <h3>What's in this guide?</h3>
+        <p class="explanation">
+            Use the sidebar to navigate through the core concepts of Blazor. Each lesson contains rich explanations, live interactive demos, and code snippets detailing the Angular/React equivalent.
+        </p>
+
+        <div class="demo-box menu-list">
+            <NavLink href="variables" class="menu-item">
+                <strong>📝 Variables & Inputs</strong>
+                <span>Learn about Normal Variables, Parameters, and EventCallbacks.</span>
+            </NavLink>
+
+            <NavLink href="components" class="menu-item">
+                <strong>🧩 Components vs Pages</strong>
+                <span>Learn the conceptual difference between a Smart Page Component and a Reusable Dumb Component.</span>
+            </NavLink>
+            
+            <NavLink href="events" class="menu-item">
+                <strong>🖱️ Event Listeners</strong>
+                <span>Learn how to bind to clicks, keyboard events, mouse events, and pass custom EventCallbacks.</span>
+            </NavLink>
+
+            <NavLink href="services" class="menu-item">
+                <strong>🌐 Services & HTTP</strong>
+                <span>Learn how to inject services and fetch data via HttpClient.</span>
+            </NavLink>
+            
+            <NavLink href="counter" class="menu-item">
+                <strong>🔢 Signals (Counter)</strong>
+                <span>Learn how to manage state reactively in Blazor using fields and StateHasChanged.</span>
+            </NavLink>
+        </div>
+    </div>
+
+    <div class="example-card">
+        <h3>Core Philosophy</h3>
+        <p class="explanation">
+            Unlike React which is just a UI library, Blazor is a full-fledged SPA framework. It provides built-in solutions for Routing, Forms, HTTP requests, and Dependency Injection right out of the box, matching Angular's feature set.
+        </p>
+        <p class="explanation">
+            In Blazor WebAssembly, your application runs client-side in the browser on top of a WebAssembly-based .NET runtime. This allows you to write C# code instead of JavaScript, sharing models and logic between your backend and frontend!
+        </p>
+    </div>
+</div>

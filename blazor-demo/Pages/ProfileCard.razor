@@ -1,0 +1,27 @@
+<div class="user-card">
+    <div class="avatar">@Initials</div>
+    <div class="info">
+        <h4>@Name</h4>
+        <p>@Role</p>
+    </div>
+    <button class="btn-sm" @onclick="OnMessageClick">Message</button>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Name { get; set; } = "";
+
+    [Parameter, EditorRequired]
+    public string Role { get; set; } = "";
+
+    [Parameter]
+    public string Initials { get; set; } = "U";
+
+    [Parameter]
+    public EventCallback<string> OnMessage { get; set; }
+
+    private async Task OnMessageClick()
+    {
+        await OnMessage.InvokeAsync(Name);
+    }
+}

@@ -1,0 +1,96 @@
+@page "/state"
+@implements IDisposable
+@inject CartStore Cart
+
+<div class="lesson-container">
+    <h2>Global State Management</h2>
+    <p class="lesson-intro">
+        In Blazor, global state is typically managed by registering a scoped service in <code>Program.cs</code> 
+        and using standard C# events (<code>event Action OnChange</code>) to notify components to re-render. This matches Angular's Injectable Store pattern.
+    </p>
+
+    <div class="roadmap-grid" style="flex-direction: row; display: flex; gap: 20px; flex-wrap: wrap;">
+        
+        <!-- Products List -->
+        <div class="example-card" style="flex: 1; min-width: 300px;">
+            <h3>Available Products</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                @foreach (var product in AvailableProducts)
+                {
+                    <div class="demo-box" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h4 style="margin: 0 0 5px 0; color: #e6edf3;">@product.Name</h4>
+                            <span style="color: #8b949e;">$@product.Price.ToString("F2")</span>
+                        </div>
+                        <button 
+                            class="btn-sm" 
+                            @onclick="() => Cart.AddItem(product)"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Shopping Cart State -->
+        <div class="example-card" style="flex: 1; min-width: 300px; background-color: rgba(35, 134, 54, 0.05); border-color: #238636;">
+            <h3 style="color: #2ea043;">Shopping Cart State</h3>
+            <p class="explanation">State is updated immutably via Store Actions, UI reacts via C# event callbacks.</p>
+            
+            <div style="background: #0d1117; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                @if (Cart.Items.Count == 0)
+                {
+                    <p style="color: #8b949e; font-style: italic; margin: 0;">Cart is empty</p>
+                }
+                else
+                {
+                    <ul style="margin: 0; padding-left: 20px; color: #e6edf3;">
+                        @foreach (var item in Cart.Items)
+                        {
+                            <li style="margin-bottom: 5px;">
+                                @item.Name ($@item.Price.ToString("F2"))
+                                <button 
+                                    style="background: none; border: none; color: #f85149; cursor: pointer; margin-left: 10px;"
+                                    @onclick="() => Cart.RemoveItem(item.Id)"
+                                >
+                                    [x]
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #30363d; padding-top: 15px;">
+                <h3 style="margin: 0;">Total: $@Cart.Total.ToString("F2")</h3>
+                @if (Cart.Items.Count > 0)
+                {
+                    <button class="btn-danger" @onclick="Cart.ClearCart">Clear</button>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private List<Product> AvailableProducts = new()
+    {
+        new Product { Id = 1, Name = "Angular Course", Price = 99.99m },
+        new Product { Id = 2, Name = "React Course", Price = 89.99m },
+        new Product { Id = 3, Name = "TypeScript Book", Price = 29.99m }
+    };
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to changes in global state
+        Cart.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        // Unsubscribe to avoid memory leaks
+        Cart.OnChange -= StateHasChanged;
+    }
+}

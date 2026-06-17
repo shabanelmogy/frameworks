@@ -1,0 +1,59 @@
+.btn-refresh {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.btn-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+  color: #8b949e;
+}
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(88, 166, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 1s ease-in-out infinite;
+  margin: 0 auto 1rem auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-state {
+  background: rgba(255, 100, 100, 0.1);
+  color: #ff7b72;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  text-align: center;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.services-user-card {
+  background: rgba(0,0,0,0.2);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--accent);
+}
+.services-user-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: #e6edf3;
+}
+.services-user-card .meta {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.9rem;
+  color: #8b949e;
+}

@@ -1,0 +1,65 @@
+@page "/variables"
+
+<div class="lesson-container">
+    <h2>Variables and Inputs in Blazor</h2>
+    <p class="lesson-intro">Blazor provides several ways to declare variables and receive data from parent components. Here is how they compare:</p>
+
+    <div class="example-card">
+        <h3>1. Normal Variables</h3>
+        <p class="explanation">
+            Standard C# fields or properties. In Blazor, modifying these will trigger a re-render automatically when UI events occur. We use the <code>@@</code> symbol to evaluate and display them in HTML.
+        </p>
+        <div class="demo-box">
+            <p><strong>Title:</strong> @Title</p>
+            <p><strong>Description:</strong> @Description</p>
+        </div>
+    </div>
+
+    <div class="example-card">
+        <h3>2. Signal Equivalents (State Variables)</h3>
+        <p class="explanation">
+            Unlike Angular's <code>signal()</code> or React's <code>useState()</code>, Blazor does not require a special reactive wrapper for basic component state. Any standard private field acts as state and triggers DOM updates on UI events.
+        </p>
+        <div class="demo-box">
+            <p><strong>Value:</strong> @StateExample</p>
+            <input class="input-field" @bind="StateExample" @bind:event="oninput" placeholder="Type to update state..." />
+        </div>
+    </div>
+
+    <div class="example-card">
+        <h3>3. Optional Parameters (Props)</h3>
+        <p class="explanation">
+            Decorating a property with <code>[Parameter]</code> allows parent components to pass data down. This is the direct equivalent of Angular's <code>input()</code> or React's optional props.
+        </p>
+        <div class="demo-box">
+            <p><strong>Value provided by Parent:</strong> @OptionalInput</p>
+        </div>
+    </div>
+
+    <div class="example-card">
+        <h3>4. Required Parameters</h3>
+        <p class="explanation">
+            Using the <code>[EditorRequired]</code> attribute on a Parameter enforces that the parent component <strong>must</strong> pass a value, showing a compiler warning if it's omitted. This matches Angular's <code>input.required()</code>.
+        </p>
+        <div class="demo-box">
+            <p><strong>Required Value from Parent:</strong> @RequiredInput</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    // 1. Normal Variables
+    private string Title = "Blazor 2026";
+    private string Description = "A fast, modern framework that compiles to WebAssembly and will feel very familiar to a .NET developer.";
+
+    // 2. State Variable (Signals equivalent)
+    private string StateExample = "This is a reactive state variable";
+
+    // 3. Optional Parameter
+    [Parameter]
+    public string OptionalInput { get; set; } = "Default Optional Parameter Value";
+
+    // 4. Required Parameter
+    [Parameter, EditorRequired]
+    public string RequiredInput { get; set; } = "Default Required Parameter Value (provided as fallback)";
+}

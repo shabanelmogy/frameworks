@@ -1,0 +1,68 @@
+@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<div class="lesson-container">
+    <h2>Counter Example (with State)</h2>
+    <p class="lesson-intro">
+        In Angular, we use <code>signal()</code>. In React, <code>useState()</code>. 
+        In Blazor, standard C# fields act as state. Blazor automatically calls <code>StateHasChanged()</code> after UI events to re-render the DOM!
+    </p>
+
+    <div class="example-card">
+        <h3>Counter Demo</h3>
+        <p class="explanation">Notice how we don't need any special wrapper around the integer. We call standard event listeners to update the state.</p>
+        
+        <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+            <p style="margin: 0; font-size: 1.5rem; font-weight: bold; color: #58a6ff;">
+                Current Count: <strong>@currentCount</strong>
+            </p>
+            
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-danger" @onclick="Decrement">- Decrement</button>
+                <button class="btn" style="background-color: #30363d;" @onclick="Reset">Reset</button>
+                <button class="btn" @onclick="Increment">+ Increment</button>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 10px 0;" />
+
+            <div class="status">
+                @if (currentCount == 0)
+                {
+                    <p class="info" style="color: #c9d1d9; margin: 0;">The counter is at zero.</p>
+                }
+                else if (currentCount > 10)
+                {
+                    <p class="warning" style="color: #ffd33d; font-weight: bold; margin: 0;">Wow, that's a high number!</p>
+                }
+                else
+                {
+                    <p class="info" style="color: #c9d1d9; margin: 0;">
+                        The number is <strong>@(IsEven ? "Even" : "Odd")</strong>.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int currentCount = 0;
+
+    private bool IsEven => currentCount % 2 == 0;
+
+    private void Increment()
+    {
+        currentCount++;
+    }
+
+    private void Decrement()
+    {
+        currentCount--;
+    }
+
+    private void Reset()
+    {
+        currentCount = 0;
+    }
+}

@@ -1,0 +1,129 @@
+@page "/roadmap"
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+
+<div class="lesson-container">
+    <h2>Blazor 2026 Roadmap Explorer</h2>
+    <p class="lesson-intro">
+        Track your progress through the ultimate 2026 syllabus. Click the links to navigate directly to the interactive lesson for each topic!
+    </p>
+
+    <div class="progress-container">
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: @(ProgressPercent)%"></div>
+        </div>
+        <p class="progress-text">@CompletedCount of @TotalTopics completed (@ProgressPercent%)</p>
+    </div>
+
+    <div class="roadmap-grid">
+        @foreach (var section in RoadmapData)
+        {
+            <div class="roadmap-section">
+                <h3 class="section-title">@section.Title</h3>
+                <div class="topics-list">
+                    @foreach (var topic in section.Topics)
+                    {
+                        var isCompleted = CompletedTopics.ContainsKey(topic.Id) && CompletedTopics[topic.Id];
+                        
+                        <div class="topic-card @(isCompleted ? "completed" : "")">
+                            <div class="topic-header">
+                                <input 
+                                    type="checkbox" 
+                                    class="topic-checkbox"
+                                    checked="@isCompleted"
+                                    @onchange="@((ChangeEventArgs e) => ToggleTopic(topic.Id))"
+                                />
+                                <h4 class="topic-title">@topic.Title</h4>
+                            </div>
+                            <p class="topic-desc">@topic.Description</p>
+                            @if (!string.IsNullOrEmpty(topic.Link))
+                            {
+                                <a href="@topic.Link" class="topic-link">
+                                    Go to Lesson <span>→</span>
+                                </a>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private Dictionary<string, bool> CompletedTopics = new Dictionary<string, bool>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                var saved = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "blazor_roadmap_progress");
+                if (!string.IsNullOrEmpty(saved))
+                {
+                    CompletedTopics = JsonSerializer.Deserialize<Dictionary<string, bool>>(saved) ?? new Dictionary<string, bool>();
+                    StateHasChanged(); // Re-render with loaded state
+                }
+            }
+            catch
+            {
+                // Ignore parsing errors and start fresh
+            }
+        }
+    }
+
+    private async Task ToggleTopic(string id)
+    {
+        if (CompletedTopics.ContainsKey(id))
+        {
+            CompletedTopics[id] = !CompletedTopics[id];
+        }
+        else
+        {
+            CompletedTopics[id] = true;
+        }
+
+        var json = JsonSerializer.Serialize(CompletedTopics);
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "blazor_roadmap_progress", json);
+    }
+
+    private int TotalTopics => RoadmapData.Sum(s => s.Topics.Count);
+    private int CompletedCount => CompletedTopics.Values.Count(v => v);
+    private int ProgressPercent => TotalTopics == 0 ? 0 : (int)Math.Round(((double)CompletedCount / TotalTopics) * 100);
+
+    private List<RoadmapSection> RoadmapData = new()
+    {
+        new RoadmapSection { Title = "1. Core Fundamentals", Topics = new() {
+            new RoadmapTopic { Id = "overview", Title = "Project Structure & Basics", Description = "Blazor WebAssembly, Razor Syntax", Link = "overview" },
+            new RoadmapTopic { Id = "variables", Title = "Components & Data Binding", Description = "[Parameter], @value, @bind", Link = "variables" },
+            new RoadmapTopic { Id = "directives", Title = "Directives & Bindings", Description = "@if, @foreach, HTML Attributes", Link = "directives" },
+            new RoadmapTopic { Id = "components", Title = "Component Communication", Description = "Parent/Child, EventCallback", Link = "components" }
+        }},
+        new RoadmapSection { Title = "2. Intermediate Concepts", Topics = new() {
+            new RoadmapTopic { Id = "forms", Title = "Forms & Validation", Description = "EditForm, DataAnnotationsValidator", Link = "forms" },
+            new RoadmapTopic { Id = "services", Title = "Dependency Injection", Description = "builder.Services.AddScoped", Link = "services" },
+            new RoadmapTopic { Id = "events", Title = "Routing & Navigation", Description = "@page, NavigationManager", Link = "events" }
+        }},
+        new RoadmapSection { Title = "3. Advanced Concepts", Topics = new() {
+            new RoadmapTopic { Id = "async", Title = "Async Patterns", Description = "async/await, Task, CancellationToken", Link = "async" },
+            new RoadmapTopic { Id = "auth", Title = "Authentication", Description = "AuthenticationStateProvider, AuthorizeView", Link = "auth" },
+            new RoadmapTopic { Id = "adv-signals", Title = "Advanced Signals", Description = "Computed properties, Side effects with IJSRuntime, Renders", Link = "advanced-signals" },
+            new RoadmapTopic { Id = "state", Title = "State Management", Description = "CascadingParameter, Scoped Services with Actions", Link = "state" }
+        }}
+    };
+
+    public class RoadmapSection
+    {
+        public string Title { get; set; } = "";
+        public List<RoadmapTopic> Topics { get; set; } = new();
+    }
+
+    public class RoadmapTopic
+    {
+        public string Id { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Link { get; set; } = "";
+    }
+}

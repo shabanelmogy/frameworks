@@ -1,0 +1,76 @@
+@page "/auth"
+
+<div class="lesson-container">
+    <h2>Authentication & Route Protection</h2>
+    <p class="lesson-intro">
+        In Blazor, we use the <code>AuthenticationStateProvider</code> to manage identity, and wrap secure areas of our UI in the <code>&lt;AuthorizeView&gt;</code> component.
+    </p>
+
+    <div class="example-card" style="margin-bottom: 20px;">
+        <h3>1. Authentication State</h3>
+        <div class="demo-box">
+            <p>Status: <strong style="color: @(IsAuthenticated ? "#2ea043" : "#f85149")">
+                @(IsAuthenticated ? "Logged In (Authenticated)" : "Logged Out (Guest)")
+            </strong></p>
+            
+            @if (IsAuthenticated)
+            {
+                <p style="word-break: break-all;">
+                    <strong>JWT Token:</strong> <code style="font-size: 0.8rem;">@Token</code>
+                </p>
+            }
+
+            <div style="margin-top: 15px;">
+                @if (!IsAuthenticated)
+                {
+                    <button class="btn" @onclick="Login">Log In</button>
+                }
+                else
+                {
+                    <button class="btn-danger" @onclick="Logout">Log Out</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="example-card">
+        <h3>2. Protected Content (Mock AuthorizeView)</h3>
+        <p class="explanation">
+            In a real app, you would use <code>&lt;AuthorizeView&gt;</code> and <code>&lt;Authorized&gt;</code> / <code>&lt;NotAuthorized&gt;</code> tags. Here we simulate it.
+        </p>
+        <div class="demo-box" style="background: @(IsAuthenticated ? "rgba(46, 160, 67, 0.1)" : "rgba(248, 81, 73, 0.1)"); border-left-color: @(IsAuthenticated ? "#2ea043" : "#f85149")">
+            @if (IsAuthenticated)
+            {
+                <div>
+                    <h4 style="color: #2ea043; margin-top: 0;">🔓 Access Granted: Dashboard</h4>
+                    <p>Welcome back! You can only see this content because you are logged in.</p>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <h4 style="color: #f85149; margin-top: 0;">🔒 Access Denied</h4>
+                    <p>You must log in to view this content. In a real app, an <code>[Authorize]</code> attribute on the page would trigger a redirect.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool IsAuthenticated = false;
+    private string? Token = null;
+
+    private void Login()
+    {
+        // Mock login API call
+        Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.MockTokenBlazor123456789";
+        IsAuthenticated = true;
+    }
+
+    private void Logout()
+    {
+        Token = null;
+        IsAuthenticated = false;
+    }
+}

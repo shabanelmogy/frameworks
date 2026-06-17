@@ -1,0 +1,132 @@
+@page "/forms"
+@inject IJSRuntime JSRuntime
+@using System.ComponentModel.DataAnnotations
+
+<div class="lesson-container">
+    <h2>Forms & Local Storage in Blazor</h2>
+    <p class="lesson-intro">
+        In Blazor, forms can be built using the <code>&lt;EditForm&gt;</code> component where data-binding is handled via
+        <code>@@bind-Value</code> and validation rules (like <code>[Required]</code> or <code>[MinLength]</code>) are configured directly on the C# model.
+    </p>
+
+    <div class="grid-container">
+        <!-- Form Card -->
+        <div class="example-card">
+            <h3>User Profile Form</h3>
+            <EditForm Model="@formData" OnValidSubmit="HandleValidSubmit" FormName="ProfileForm">
+                <DataAnnotationsValidator />
+                
+                <!-- Username Input -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <InputText id="username" @bind-Value="formData.Username" class="input-field" placeholder="Enter username" />
+                    <ValidationMessage For="@(() => formData.Username)" class="error-message" />
+                </div>
+
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <InputText id="email" type="email" @bind-Value="formData.Email" class="input-field" placeholder="name@example.com" />
+                    <ValidationMessage For="@(() => formData.Email)" class="error-message" />
+                </div>
+
+                <!-- Role Select -->
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <InputSelect id="role" @bind-Value="formData.Role" class="input-field">
+                        <option value="Developer">Developer</option>
+                        <option value="Designer">Designer</option>
+                        <option value="Product Manager">Product Manager</option>
+                    </InputSelect>
+                </div>
+
+                <button type="submit" class="btn">
+                    Save Profile
+                </button>
+            </EditForm>
+        </div>
+
+        <!-- Display Local Storage Data -->
+        <div class="example-card">
+            <h3>Local Storage State</h3>
+            <p class="explanation">
+                Data currently stored in key: <code>blazor_user_profile</code>
+            </p>
+
+            <div class="demo-box">
+                @if (savedData != null)
+                {
+                    <div>
+                        <p><strong>Username:</strong> @savedData.Username</p>
+                        <p><strong>Email:</strong> @savedData.Email</p>
+                        <p><strong>Role:</strong> @savedData.Role</p>
+                        <button @onclick="ClearStorage" class="btn-danger" style="margin-top: 10px;">
+                            Clear Storage
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <p style="color: #8b949e; font-style: italic;">No profile data found in Local Storage.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ProfileModel formData = new() { Role = "Developer" };
+    private ProfileModel? savedData;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadFromStorage();
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var json = System.Text.Json.JsonSerializer.Serialize(formData);
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "blazor_user_profile", json);
+        await LoadFromStorage();
+    }
+
+    private async Task LoadFromStorage()
+    {
+        try
+        {
+            var json = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "blazor_user_profile");
+            if (!string.IsNullOrEmpty(json))
+            {
+                savedData = System.Text.Json.JsonSerializer.Deserialize<ProfileModel>(json);
+                StateHasChanged();
+            }
+        }
+        catch
+        {
+            // Ignore parsing errors
+        }
+    }
+
+    private async Task ClearStorage()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "blazor_user_profile");
+        savedData = null;
+        formData = new ProfileModel() { Role = "Developer" };
+    }
+
+    public class ProfileModel
+    {
+        [Required(ErrorMessage = "Username is required.")]
+        [MinLength(3, ErrorMessage = "Username must be at least 3 characters.")]
+        public string Username { get; set; } = "";
+
+        [Required(ErrorMessage = "Email is required.")]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Email address is invalid.")]
+        public string Email { get; set; } = "";
+
+        public string Role { get; set; } = "Developer";
+    }
+}

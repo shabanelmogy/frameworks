@@ -1,0 +1,116 @@
+@page "/async"
+@using System.Threading
+
+<div class="lesson-container">
+    <h2>Asynchronous Patterns (RxJS Equivalents)</h2>
+    <p class="lesson-intro">
+        In Angular, <strong>RxJS</strong> is used heavily. In Blazor, we natively use C# <code>async / await</code> and <code>Task</code> for asynchronous programming. We use <code>CancellationTokenSource</code> to achieve cancellation (like RxJS <code>switchMap</code>).
+    </p>
+
+    <div class="example-card">
+        <h3>Real-time Search with Debounce & Cancellation</h3>
+        <p class="explanation">
+            Type below. The search waits 500ms after you stop typing before executing (Debounce). 
+            If you type again while a request is pending, the old request is cancelled via <code>CancellationToken</code>.
+        </p>
+
+        <div class="demo-box">
+            <input
+                type="text"
+                class="input-field"
+                placeholder="Search technologies..."
+                @bind="SearchTerm"
+                @bind:event="oninput"
+                style="width: 100%; max-width: 400px;"
+            />
+            
+            <div style="margin-top: 20px;">
+                @if (IsSearching)
+                {
+                    <p style="color: #58a6ff;">⏳ Searching for "@SearchTerm"...</p>
+                }
+                else
+                {
+                    <ul style="padding-left: 20px; color: #e6edf3;">
+                        @foreach (var result in Results)
+                        {
+                            <li style="margin-bottom: 8px;">@result</li>
+                        }
+                        @if (Results.Count == 0)
+                        {
+                            if (!string.IsNullOrEmpty(SearchTerm))
+                            {
+                                <li style="color: #f85149; list-style: none; margin-left: -20px;">No results found</li>
+                            }
+                            else
+                            {
+                                <li style="color: #8b949e; list-style: none; margin-left: -20px;">Start typing to see results...</li>
+                            }
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _searchTerm = "";
+    public string SearchTerm 
+    {
+        get => _searchTerm;
+        set 
+        {
+            _searchTerm = value;
+            _ = DebounceSearchAsync(value); // Fire and forget
+        }
+    }
+
+    private List<string> Results = new();
+    private bool IsSearching = false;
+
+    private CancellationTokenSource? _cts;
+    private readonly List<string> _mockDb = new() { "Angular", "React", "Vue", "Svelte", "RxJS", "Redux", "Signals", "TypeScript", "Blazor", "C#", ".NET" };
+
+    private async Task DebounceSearchAsync(string term)
+    {
+        // Cancel the previous task if the user is still typing (switchMap behavior)
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+        var token = _cts.Token;
+
+        try
+        {
+            // Debounce: Wait 500ms
+            await Task.Delay(500, token);
+
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                Results.Clear();
+                IsSearching = false;
+                StateHasChanged();
+                return;
+            }
+
+            IsSearching = true;
+            StateHasChanged(); // Force UI update before long operation
+
+            // Simulate API Latency
+            await Task.Delay(800, token);
+
+            Results = _mockDb.Where(x => x.Contains(term, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        catch (TaskCanceledException)
+        {
+            // This is expected when the user keeps typing. Ignore it.
+        }
+        finally
+        {
+            if (!token.IsCancellationRequested)
+            {
+                IsSearching = false;
+                StateHasChanged();
+            }
+        }
+    }
+}

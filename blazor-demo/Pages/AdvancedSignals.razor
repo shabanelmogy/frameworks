@@ -1,0 +1,111 @@
+@page "/advanced-signals"
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<div class="lesson-container">
+    <h2>Advanced Signals (C# Equivalents)</h2>
+    <p class="lesson-intro">
+        Angular 16+ introduced <strong>Signals</strong> (<code>signal</code>, <code>computed</code>, <code>effect</code>). In Blazor, we achieve identical reactive flows using standard C# fields, derived properties, and browser integration.
+    </p>
+
+    <div class="example-card">
+        <h3>Computed Values & Side Effects</h3>
+        <p class="explanation">
+            Adjust the inputs below. Notice how the Total Price is derived automatically using a C# property (computed equivalent), and the browser tab title updates automatically via a side effect (effect equivalent).
+        </p>
+
+        <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #c9d1d9;">Base Price ($):</label>
+                <input 
+                    type="number" 
+                    class="input-field" 
+                    value="@basePrice"
+                    @oninput="UpdateBasePrice"
+                />
+            </div>
+
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #c9d1d9;">Tax Rate (%):</label>
+                <input 
+                    type="number" 
+                    class="input-field" 
+                    value="@(taxRate * 100)"
+                    @oninput="UpdateTaxRate"
+                />
+            </div>
+
+            <div style="padding: 15px; background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; color: #58a6ff;">Derived State (Computed)</h4>
+                <p style="margin: 0; font-size: 1.2rem; font-weight: bold;">
+                    Total Price: $@FinalPrice.ToString("F2")
+                </p>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: #8b949e; font-style: italic; margin: 0;">
+                Component Render Count: @renderCount
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+    private double basePrice = 100;
+    private double taxRate = 0.2;
+    private int renderCount = 0;
+
+    private double FinalPrice => basePrice + (basePrice * taxRate);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateTitle();
+    }
+
+    protected override void OnParametersSet()
+    {
+        renderCount++;
+    }
+
+    private async Task UpdateBasePrice(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var val))
+        {
+            basePrice = val;
+            await UpdateTitle();
+        }
+    }
+
+    private async Task UpdateTaxRate(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var val))
+        {
+            taxRate = val / 100.0;
+            await UpdateTitle();
+        }
+    }
+
+    private async Task UpdateTitle()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("eval", $"document.title = 'Total: ${FinalPrice.ToString("F2")}'");
+        }
+        catch
+        {
+            // Fail silently if JS is not available (e.g. pre-rendering)
+        }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            // Restore tab title when page is destroyed
+            _ = JSRuntime.InvokeVoidAsync("eval", "document.title = 'Blazor Learn'");
+        }
+        catch
+        {
+            // Fail silently
+        }
+    }
+}
