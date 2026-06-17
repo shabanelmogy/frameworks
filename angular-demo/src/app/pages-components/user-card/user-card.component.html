@@ -1,0 +1,8 @@
+<div class="user-card">
+  <div class="avatar">{{ initials() }}</div>
+  <div class="info">
+    <h4>{{ name() }}</h4>
+    <p>{{ role() }}</p>
+  </div>
+  <button class="btn-sm" (click)="messageUser.emit(name())">Message</button>
+</div>

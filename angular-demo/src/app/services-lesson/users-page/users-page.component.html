@@ -1,0 +1,42 @@
+<div class="lesson-container">
+  <h2>Services & Data Fetching</h2>
+  <p class="lesson-intro">In Angular, we fetch data using the <code>HttpClient</code> inside an <code>&#64;Injectable</code> Service, keeping our UI components clean!</p>
+
+  <div class="example-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h3>Mock API Users</h3>
+      <button class="btn-refresh" (click)="fetchData()" [disabled]="isLoading()">
+        Refresh Data
+      </button>
+    </div>
+
+    <!-- ⚛️ React equivalent: {isLoading ? <p>Loading...</p> : null} -->
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching users from JSONPlaceholder...</p>
+      </div>
+    }
+
+    <!-- ⚛️ React equivalent: {error ? <p>{error}</p> : null} -->
+    @if (error()) {
+      <div class="error-state">
+        <p>⚠️ {{ error() }}</p>
+      </div>
+    }
+
+    <!-- ⚛️ React equivalent: users.length > 0 && !isLoading && !error ? (...) : null -->
+    @if (!isLoading() && !error() && users().length > 0) {
+      <div class="users-grid">
+        <!-- ⚛️ React equivalent: users.map(user => <div key={user.id}>...</div>) -->
+        @for (user of users(); track user.id) {
+          <div class="user-card">
+            <h4>{{ user.name }}</h4>
+            <p class="meta">Email: {{ user.email }}</p>
+            <p class="meta">Company: {{ user.company.name }}</p>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

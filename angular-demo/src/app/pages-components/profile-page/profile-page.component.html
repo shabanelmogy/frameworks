@@ -1,0 +1,31 @@
+<div class="lesson-container">
+  <h2>Pages vs Components in Angular</h2>
+  <p class="lesson-intro">In Angular, there is no technical difference between a "Page" and a "Component". They are both just <code>&#64;Component</code> classes!</p>
+
+  <div class="example-card">
+    <h3>The Conceptual Difference</h3>
+    <p class="explanation">
+      <strong>A "Page" (Smart Component):</strong> Is attached to a Route (like this one!). It manages state, fetches data, and handles layout. <br><br>
+      <strong>A "Component" (Dumb Component):</strong> Is reusable UI. It doesn't know about the URL. It just receives data via <code>input()</code> and emits events via <code>output()</code>.
+    </p>
+    
+    <div class="demo-box" style="margin-top: 20px;">
+      <h3 style="color: white; margin-bottom: 1rem;">{{ pageTitle }}</h3>
+      
+      <!-- We loop through our data and pass it to the Reusable Component -->
+      <!-- We also listen to the (messageUser) output event it emits -->
+      @for (member of teamMembers; track member.name) {
+        <app-user-card 
+          [name]="member.name" 
+          [role]="member.role"
+          [initials]="member.init"
+          (messageUser)="handleMessage($event)">
+        </app-user-card>
+      }
+
+      <div class="status-bar" *ngIf="lastAction !== 'None'">
+        <span style="font-size: 1.2rem;">💬</span> {{ lastAction }}
+      </div>
+    </div>
+  </div>
+</div>

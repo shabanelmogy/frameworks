@@ -1,0 +1,140 @@
+.lesson-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.lesson-intro {
+  margin-bottom: 2rem;
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+.progress-container {
+  background: var(--card-bg, #21262d);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 12px;
+  background: rgba(139, 148, 158, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #58a6ff, #bc8cff);
+  transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+  margin: 0;
+  text-align: right;
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  font-weight: bold;
+}
+
+.roadmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.roadmap-section {
+  background: rgba(33, 38, 45, 0.5);
+  border-left: 4px solid var(--accent, #58a6ff);
+  border-radius: 0 8px 8px 0;
+  padding: 1.5rem;
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #e6edf3;
+  font-size: 1.4rem;
+}
+
+.topics-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.topic-card {
+  background: var(--card-bg, #21262d);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.topic-card:hover {
+  transform: translateY(-2px);
+  border-color: #8b949e;
+}
+
+.topic-card.completed {
+  border-color: #238636;
+  background: rgba(35, 134, 54, 0.05);
+}
+
+.topic-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.topic-checkbox {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: #238636;
+  cursor: pointer;
+}
+
+.topic-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e6edf3;
+}
+
+.topic-card.completed .topic-title {
+  text-decoration: line-through;
+  color: #8b949e;
+}
+
+.topic-desc {
+  color: #8b949e;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.topic-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent, #58a6ff);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.topic-link:hover {
+  opacity: 0.8;
+}
+
+.topic-link span {
+  font-size: 1.1rem;
+}

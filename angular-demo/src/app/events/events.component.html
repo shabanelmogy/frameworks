@@ -1,0 +1,69 @@
+<div class="lesson-container">
+  <h2>Event Listeners in Angular</h2>
+  <p class="lesson-intro">In Angular, you bind to DOM events using parentheses <code>(event)="method()"</code>. This is equivalent to native <code>addEventListener</code>.</p>
+
+  <div class="example-card">
+    <h3>1. Basic Click Event <code>(click)</code></h3>
+    <p class="explanation">The most common event. Wrap the target event in parentheses.</p>
+    <div class="demo-box">
+      <button class="btn" (click)="onButtonClick()">Click Me!</button>
+      <p>You clicked the button: <strong>{{ clickCount }}</strong> times.</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>2. Passing the Event Object <code>($event)</code></h3>
+    <p class="explanation">Pass the special <code>$event</code> variable to get details about the event.</p>
+    <div class="demo-box">
+      <p>Type below to see the last key pressed:</p>
+      <input type="text" class="input-field" (keyup)="onKeyup($event)" placeholder="Type something..." />
+      <p>Last key: <span class="badge">{{ lastKeyPressed }}</span></p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>3. Key Modifiers <code>(keyup.enter)</code></h3>
+    <p class="explanation">By appending <code>.enter</code>, Angular only triggers the method on the Enter key.</p>
+    <div class="demo-box">
+      <p>Type a message and press Enter to save:</p>
+      <input #messageInput type="text" class="input-field" (keyup.enter)="onEnterPress(messageInput.value); messageInput.value=''" placeholder="Press Enter to save..." />
+      <div *ngIf="savedMessage" class="success-message">Saved: {{ savedMessage }}</div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>4. Mouse Events <code>(mouseenter) / (mouseleave)</code></h3>
+    <p class="explanation">React to mouse hover states easily without CSS.</p>
+    <div class="demo-box" [style.backgroundColor]="boxColor" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+      <p style="text-align: center; margin: 10px 0; font-weight: bold;">{{ hoverStatus }}</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>5. Form Events <code>(focus) / (blur) / (input)</code></h3>
+    <p class="explanation">Track input changes and focus states as they happen.</p>
+    <div class="demo-box">
+      <input type="text" class="input-field" (focus)="onFocus()" (blur)="onBlur()" (input)="onInput($event)" placeholder="Interact with me..." />
+      <p>Status: <span class="badge">{{ focusStatus }}</span></p>
+      <p>Current Value: <strong>{{ inputValue }}</strong></p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>6. Global Events <code>(window:resize)</code></h3>
+    <p class="explanation">You can bind to global targets like <code>window</code> or <code>document</code> directly from the template!</p>
+    <div class="demo-box" (window:resize)="onResize($event)">
+      <p>Resize your browser window to see this update:</p>
+      <p>Window width is: <span class="badge">{{ windowWidth }}px</span></p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>7. Custom Events <code>output()</code></h3>
+    <p class="explanation">You can emit your own custom events for parent components to listen to.</p>
+    <div class="demo-box">
+      <button class="btn" (click)="emitCustomEvent()">Emit Custom Event</button>
+      <p style="font-size: 0.9em; color: #8b949e; margin-top: 10px;">(Check the console or bind to <code>(myCustomEvent)</code> in a parent component)</p>
+    </div>
+  </div>
+</div>

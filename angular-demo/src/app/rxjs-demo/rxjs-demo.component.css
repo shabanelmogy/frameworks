@@ -1,0 +1,62 @@
+.lesson-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.lesson-intro {
+  margin-bottom: 2rem;
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+.example-card {
+  background: var(--card-bg, #21262d);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.example-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #e6edf3;
+}
+
+.explanation {
+  color: #8b949e;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.demo-box {
+  background: rgba(0,0,0,0.2);
+  padding: 1.5rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--accent, #58a6ff);
+}
+
+.input-field {
+  padding: 0.6rem;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 6px;
+  background: var(--bg-color, #0d1117);
+  color: var(--text-color, #c9d1d9);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: 2px solid var(--accent, #58a6ff);
+  border-color: transparent;
+}
+
+code {
+  background: var(--code-bg, rgba(110, 118, 129, 0.4));
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #ff7b72;
+}

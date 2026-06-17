@@ -1,0 +1,45 @@
+<div class="lesson-container">
+  <h2>Variables and Inputs in Angular</h2>
+  <p class="lesson-intro">Angular provides several ways to declare variables and receive data from parent components. Here is how they compare:</p>
+
+  <div class="example-card">
+    <h3>1. Normal Variables</h3>
+    <p class="explanation">
+      Standard TypeScript class properties. They are not deeply reactive on their own outside of Angular's Zone.js change detection cycle. You use standard interpolation <code ngNonBindable>{{ property }}</code> to display them.
+    </p>
+    <div class="demo-box">
+      <p><strong>Title:</strong> {{ title }}</p>
+      <p><strong>Description:</strong> {{ description }}</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>2. Signal Variables</h3>
+    <p class="explanation">
+      Introduced in Angular 16+, signals are reactive wrappers around a value. They tell Angular exactly when they change, making your app extremely fast. In the template, you MUST call them as a function: <code ngNonBindable>{{ signalExample() }}</code>.
+    </p>
+    <div class="demo-box">
+      <p><strong>Value:</strong> {{ signalExample() }}</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>3. Optional Signal Inputs</h3>
+    <p class="explanation">
+      The modern replacement for <code>&#64;Input()</code>. This acts exactly like a <code>[Parameter]</code> in Blazor. It receives data from the parent component. Because it's a signal, it's read-only from inside this component, and reactive.
+    </p>
+    <div class="demo-box">
+      <p><strong>Value provided by Parent:</strong> {{ optionalInput() }}</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>4. Required Signal Inputs</h3>
+    <p class="explanation">
+      Like <code>[Parameter, EditorRequired]</code> in Blazor. It enforces that the parent component <strong>must</strong> pass a value, otherwise Angular throws a runtime error. It cannot have a default value.
+    </p>
+    <div class="demo-box">
+      <p><strong>Required Value from Parent:</strong> {{ requiredInput() }}</p>
+    </div>
+  </div>
+</div>

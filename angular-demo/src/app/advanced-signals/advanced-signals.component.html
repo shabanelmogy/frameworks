@@ -1,0 +1,46 @@
+<div class="lesson-container">
+  <h2>Advanced Signals</h2>
+  <p class="lesson-intro">
+    Angular 16+ introduced <strong>Signals</strong> (<code>signal</code>, <code>computed</code>, <code>effect</code>). In React, we use <code>useState</code> for signals, <code>useMemo</code> for computed values, and <code>useEffect</code> for side effects.
+  </p>
+
+  <div class="example-card">
+    <h3>Computed Values & Side Effects</h3>
+    <p class="explanation">
+      Adjust the inputs below. Notice how the Total Price is derived automatically using <code>computed()</code>, and the browser tab title updates automatically via <code>effect()</code>.
+    </p>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+      <div>
+        <label style="display: block; margin-bottom: 5px; color: #c9d1d9;">Base Price ($):</label>
+        <input 
+          type="number" 
+          class="input-field" 
+          [value]="basePrice()"
+          (input)="updateBasePrice($event)"
+        />
+      </div>
+
+      <div>
+        <label style="display: block; margin-bottom: 5px; color: #c9d1d9;">Tax Rate (%):</label>
+        <input 
+          type="number" 
+          class="input-field" 
+          [value]="taxRate() * 100"
+          (input)="updateTaxRate($event)"
+        />
+      </div>
+
+      <div style="padding: 15px; background: rgba(88, 166, 255, 0.1); border-left: 4px solid #58a6ff; border-radius: 4px;">
+        <h4 style="margin: 0 0 10px 0; color: #58a6ff;">Derived State (Computed)</h4>
+        <p style="margin: 0; font-size: 1.2rem; font-weight: bold;">
+          Total Price: ${{ finalPrice().toFixed(2) }}
+        </p>
+      </div>
+      
+      <p style="font-size: 0.85rem; color: #8b949e; font-style: italic; margin: 0;">
+        Component Render Count (ngDoCheck): {{ renderCount }}
+      </p>
+    </div>
+  </div>
+</div>

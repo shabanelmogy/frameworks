@@ -1,0 +1,43 @@
+<div class="lesson-container">
+  <h2>Asynchronous Patterns (RxJS Essentials)</h2>
+  <p class="lesson-intro">
+    In Angular, <strong>RxJS</strong> is the backbone of reactivity and async operations. Features like <code>HttpClient</code> return Observables by default. We use powerful operators like <code>debounceTime</code> and <code>switchMap</code> to handle complex async flows elegantly.
+  </p>
+
+  <div class="example-card">
+    <h3>Real-time Search with RxJS</h3>
+    <p class="explanation">
+      Type below. The search waits 500ms after you stop typing (<code>debounceTime</code>). 
+      If you type again while a request is pending, the old request is cancelled and ignored (<code>switchMap</code> behavior).
+    </p>
+
+    <div class="demo-box">
+      <input
+        type="text"
+        class="input-field"
+        placeholder="Search technologies (e.g. 'Angular', 'RxJS')..."
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchChange($event)"
+        style="width: 100%; max-width: 400px;"
+      />
+      
+      <div style="margin-top: 20px;">
+        @if (isSearching) {
+          <p style="color: #58a6ff;">⏳ Searching for "{{ debouncedTerm }}"...</p>
+        } @else {
+          <ul style="padding-left: 20px; color: #e6edf3;">
+            @for (result of results; track result) {
+              <li style="margin-bottom: 8px;">{{ result }}</li>
+            } @empty {
+              @if (searchTerm) {
+                <li style="color: #f85149; list-style: none; margin-left: -20px;">No results found</li>
+              } @else {
+                <li style="color: #8b949e; list-style: none; margin-left: -20px;">Start typing to see results...</li>
+              }
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+</div>

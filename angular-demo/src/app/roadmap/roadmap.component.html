@@ -1,0 +1,42 @@
+<div class="lesson-container">
+  <h2>Angular 2026 Roadmap Explorer</h2>
+  <p class="lesson-intro">
+    Track your progress through the ultimate 2026 syllabus. Click the links to navigate directly to the interactive lesson for each topic!
+  </p>
+
+  <div class="progress-container">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
+    </div>
+    <p class="progress-text">{{ completedCount }} of {{ totalTopics }} completed ({{ progressPercent }}%)</p>
+  </div>
+
+  <div class="roadmap-grid">
+    @for (section of ROADMAP_DATA; track section.title) {
+      <div class="roadmap-section">
+        <h3 class="section-title">{{ section.title }}</h3>
+        <div class="topics-list">
+          @for (topic of section.topics; track topic.id) {
+            <div class="topic-card" [class.completed]="completedTopics[topic.id]">
+              <div class="topic-header">
+                <input 
+                  type="checkbox" 
+                  class="topic-checkbox"
+                  [checked]="completedTopics[topic.id]"
+                  (change)="toggleTopic(topic.id)"
+                />
+                <h4 class="topic-title">{{ topic.title }}</h4>
+              </div>
+              <p class="topic-desc">{{ topic.description }}</p>
+              @if (topic.link) {
+                <a [routerLink]="topic.link" class="topic-link">
+                  Go to Lesson <span>→</span>
+                </a>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

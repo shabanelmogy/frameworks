@@ -1,0 +1,94 @@
+<div class="app-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Angular Learn</h2>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/roadmap" routerLinkActive="active" class="nav-item">
+            <span class="icon">🗺️</span> Roadmap Hub
+          </a>
+        </li>
+        <li>
+          <a routerLink="/overview" routerLinkActive="active" class="nav-item">
+            <span class="icon">📖</span> Overview
+          </a>
+        </li>
+        <li>
+          <a routerLink="/variables" routerLinkActive="active" class="nav-item">
+            <span class="icon">📝</span> Variables & Inputs
+          </a>
+        </li>
+        <li>
+          <a routerLink="/components" routerLinkActive="active" class="nav-item">
+            <span class="icon">🧩</span> Components & Pages
+          </a>
+        </li>
+        <li>
+          <a routerLink="/directives" routerLinkActive="active" class="nav-item">
+            <span class="icon">⚡</span> Directives & Bindings
+          </a>
+        </li>
+        <li>
+          <a routerLink="/forms" routerLinkActive="active" class="nav-item">
+            <span class="icon">📋</span> Forms & Storage
+          </a>
+        </li>
+        <li>
+          <a routerLink="/events" routerLinkActive="active" class="nav-item">
+            <span class="icon">🖱️</span> Event Listeners
+          </a>
+        </li>
+        <li>
+          <a routerLink="/services" routerLinkActive="active" class="nav-item">
+            <span class="icon">🌐</span> Services & HTTP
+          </a>
+        </li>
+        <li>
+          <a routerLink="/counter" routerLinkActive="active" class="nav-item">
+            <span class="icon">🔢</span> Signals (Counter)
+          </a>
+        </li>
+        <li style="margin-top: 1rem; border-top: 1px solid #30363d; padding-top: 1rem;">
+          <span style="padding: 0 1.5rem; color: #8b949e; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Advanced Topics</span>
+        </li>
+        <li>
+          <a routerLink="/async" routerLinkActive="active" class="nav-item">
+            <span class="icon">⏳</span> Async / RxJS
+          </a>
+        </li>
+        <li>
+          <a routerLink="/auth" routerLinkActive="active" class="nav-item">
+            <span class="icon">🔐</span> Authentication
+          </a>
+        </li>
+        <li>
+          <a routerLink="/advanced-signals" routerLinkActive="active" class="nav-item">
+            <span class="icon">🧠</span> Advanced Signals
+          </a>
+        </li>
+        <li>
+          <a routerLink="/state" routerLinkActive="active" class="nav-item">
+            <span class="icon">📦</span> State Management
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1>Welcome to Angular 18!</h1>
+      <p>Select a lesson from the sidebar to start learning.</p>
+    </header>
+    
+    <div class="content-wrapper">
+      <!-- Dynamic components load here -->
+      <router-outlet />
+    </div>
+  </main>
+</div>

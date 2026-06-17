@@ -1,0 +1,32 @@
+<div class="counter-card">
+  <h2>Counter Example (with Signals)</h2>
+
+  <!-- 
+    In the template, we call the signal like a function: count() 
+    Angular tracks this and ONLY updates this exact spot in the DOM when count changes!
+  -->
+  <div class="display">
+    <p class="count-text">Current Count: <strong>{{ count() }}</strong></p>
+  </div>
+
+  <div class="actions">
+    <!-- We bind events using (eventName)="method()" -->
+    <button (click)="decrement()">- Decrement</button>
+    <button (click)="reset()">Reset</button>
+    <button (click)="increment()">+ Increment</button>
+  </div>
+
+  <!-- 
+    New Angular 17+ Control Flow syntax (@if) 
+    This is much cleaner than the old *ngIf directive
+  -->
+  <div class="status">
+    @if (count() === 0) {
+      <p class="info">The counter is at zero.</p>
+    } @else if (count() > 10) {
+      <p class="warning">Wow, that's a high number!</p>
+    } @else {
+      <p class="info">The number is {{ isEven() ? 'Even' : 'Odd' }}.</p>
+    }
+  </div>
+</div>

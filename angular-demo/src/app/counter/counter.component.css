@@ -1,0 +1,46 @@
+.counter-card {
+  background-color: #2c2c2c;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+  color: #4db8ff;
+}
+
+.display {
+  font-size: 1.5rem;
+  margin: 20px 0;
+}
+
+.actions button {
+  background-color: #4db8ff;
+  color: #1e1e1e;
+  border: none;
+  padding: 10px 16px;
+  margin: 0 5px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actions button:hover {
+  background-color: #3aa1e5;
+}
+
+.status {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #444;
+}
+
+.warning {
+  color: #ffcc00;
+  font-weight: bold;
+}

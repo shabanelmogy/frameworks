@@ -1,0 +1,80 @@
+.lesson-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.lesson-intro {
+  margin-bottom: 2rem;
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+.example-card {
+  background: var(--card-bg, #21262d);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.example-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #e6edf3;
+}
+
+.explanation {
+  color: #8b949e;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.demo-box {
+  background: rgba(0,0,0,0.2);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--accent, #58a6ff);
+  margin-bottom: 10px;
+}
+
+.btn-sm {
+  background: var(--accent, #58a6ff);
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+
+.btn-sm:hover {
+  opacity: 0.9;
+}
+
+.btn-danger {
+  background: #da3633;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s;
+  margin-bottom: 0.5rem;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+code {
+  background: var(--code-bg, rgba(110, 118, 129, 0.4));
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #ff7b72;
+}

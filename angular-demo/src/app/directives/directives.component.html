@@ -1,0 +1,146 @@
+<div class="lesson-container">
+  <h2>Directives, Bindings & Pipes</h2>
+  <p class="lesson-intro">
+    Learn how Angular's template features (Directives, Property/Class/Style Bindings, and Pipes) map to React's native JavaScript and JSX equivalents.
+  </p>
+
+  <!-- 1. DIRECTIVES SECTION -->
+  <div class="example-card">
+    <h3>1. Directives (Structural & Attribute)</h3>
+    <p class="explanation">
+      <strong>Angular:</strong> Uses built-in directives like <code>*ngIf</code> / <code>&#64;if</code> for conditional rendering, <code>*ngFor</code> / <code>&#64;for</code> for lists, and custom attributes to add behavior.<br />
+      <strong>React:</strong> Uses standard JavaScript logical operators (<code>&&</code>), conditional operators, and <code>.map()</code>. Behavior directives are handled using local state or hooks.
+    </p>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+      <!-- Conditional Rendering (@if vs &&) -->
+      <div>
+        <button class="btn-sm" (click)="isVisible = !isVisible">
+          Toggle Visibility (&#64;if)
+        </button>
+        @if (isVisible) {
+          <p style="margin-top: 5px; color: #58a6ff;">✨ Now you see me! (Angular control flow: <code>&#64;if (isVisible)</code>)</p>
+        } @else {
+          <p style="margin-top: 5px; color: #8b949e;">💨 Elements removed from DOM.</p>
+        }
+      </div>
+
+      <hr style="borderColor: var(--border); margin: 10px 0;" />
+
+      <!-- List Rendering (@for vs .map) -->
+      <div>
+        <p style="font-weight: bold;">List Rendering (&#64;for):</p>
+        <form (submit)="addItem(); $event.preventDefault();" style="display: flex; gap: 10px; margin: 5px 0;">
+          <input
+            type="text"
+            class="input-field"
+            style="margin: 0;"
+            placeholder="Add fruit..."
+            [(ngModel)]="newItem"
+            name="newItem"
+          />
+          <button type="submit" class="btn" style="margin: 0;">Add</button>
+        </form>
+        <ul>
+          @for (item of items; track $index) {
+            <li style="color: #e6edf3;">{{ item }}</li>
+          }
+        </ul>
+      </div>
+
+      <hr style="borderColor: var(--border); margin: 10px 0;" />
+
+      <!-- Custom Attribute Directive -->
+      <div>
+        <p style="font-weight: bold;">Custom Attribute Directive (Highlight on Hover):</p>
+        <div
+          [appHighlight]="'#ffd33d'"
+          [defaultColor]="'#30363d'"
+          style="padding: 10px; border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.3s ease;"
+        >
+          Hover over me to highlight
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BINDINGS SECTION -->
+  <div class="example-card">
+    <h3>2. Property, Class & Style Bindings</h3>
+    <p class="explanation">
+      <strong>Angular:</strong> Binds properties via brackets <code>[disabled]="isDisabled"</code>, class/style names via <code>[class.active]="isActive"</code> or <code>[style.background-color]="color"</code>, and two-way bindings via <code>[(ngModel)]</code>.<br />
+      <strong>React:</strong> Binds attributes directly in JSX (e.g. <code>disabled={{ '{' }}isDisabled{{ '}' }}</code>). Uses <code>className</code> for classes, <code>style</code> objects for inline styles, and Controlled Components for inputs.
+    </p>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+      <!-- Class and Style Bindings -->
+      <div>
+        <button
+          class="btn"
+          [class.active-btn]="isActive"
+          [style.background-color]="isActive ? '#238636' : '#21262d'"
+          style="border: 1px solid var(--border); margin-right: 10px;"
+          (click)="isActive = !isActive"
+        >
+          Toggle Class: {{ isActive ? 'Active' : 'Inactive' }}
+        </button>
+
+        <span class="badge" [style.background-color]="bgColor">
+          Dynamic Style Color
+        </span>
+        <input
+          type="color"
+          [(ngModel)]="bgColor"
+          style="vertical-align: middle; margin-left: 10px; cursor: pointer;"
+        />
+      </div>
+
+      <hr style="borderColor: var(--border); margin: 10px 0;" />
+
+      <!-- Two-Way Binding / Controlled Component -->
+      <div>
+        <p style="font-weight: bold;">Two-Way Binding (<code>[(ngModel)]</code>):</p>
+        <input
+          type="text"
+          class="input-field"
+          [(ngModel)]="textInput"
+        />
+        <p style="font-size: 0.9em; color: #8b949e;">
+          Value in component state: <strong>{{ textInput }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PIPES/PIPELINES SECTION -->
+  <div class="example-card">
+    <h3>3. Pipes (Pipelines)</h3>
+    <p class="explanation">
+      <strong>Angular:</strong> Uses the pipe operator <code>|</code> in template expressions to format data: <code>{{ '{{' }} value | uppercase {{ '}}' }}</code>.<br />
+      <strong>React:</strong> Uses standard JavaScript expressions, helper functions, or formatting libraries directly inside JSX: <code>{{ '{' }} toTitleCase(value) {{ '}' }}</code>.
+    </p>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        <p><strong>Input Text:</strong></p>
+        <input
+          type="text"
+          class="input-field"
+          [(ngModel)]="rawText"
+        />
+      </div>
+      <div>
+        <p>Title Case Pipe (Angular: <code>| titlecase</code>):</p>
+        <span class="badge">{{ rawText | titlecase }}</span>
+      </div>
+      <div>
+        <p>Currency Pipe (Angular: <code>| currency</code>):</p>
+        <span class="badge">{{ price | currency:'USD':'symbol' }}</span>
+      </div>
+      <div>
+        <p>Date Pipe (Angular: <code>| date:'fullDate'</code>):</p>
+        <span class="badge">{{ currentDate | date:'fullDate' }}</span>
+      </div>
+    </div>
+  </div>
+</div>

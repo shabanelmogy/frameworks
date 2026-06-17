@@ -1,0 +1,56 @@
+.lesson-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.lesson-intro {
+  margin-bottom: 2rem;
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+code {
+  background: var(--code-bg);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #ff7b72;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.example-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #e6edf3;
+}
+
+.explanation {
+  color: #8b949e;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.demo-box {
+  background: rgba(0,0,0,0.2);
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--accent);
+}
+
+.demo-box p {
+  margin: 0.5rem 0;
+}
