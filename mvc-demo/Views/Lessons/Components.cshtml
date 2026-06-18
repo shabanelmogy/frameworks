@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"] = "Components";
+}
+
+<style>
+.lesson-container { max-width: 900px; margin: 0 auto; padding-bottom: 3rem; }
+.lesson-intro { margin-bottom: 2rem; color: #8b949e; font-size: 1.1rem; }
+.example-card { background: var(--card-bg, #21262d); border: 1px solid var(--border, #30363d); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+.example-card h3 { margin-top: 0; color: #e6edf3; }
+.explanation { color: #8b949e; line-height: 1.5; margin-bottom: 1rem; }
+.demo-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border, #30363d); border-radius: 6px; padding: 1.5rem; }
+code { background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px; color: #e6edf3; font-family: monospace; }
+.status-bar { margin-top: 20px; padding: 10px; background: rgba(88, 166, 255, 0.1); border: 1px solid #58a6ff; border-radius: 4px; color: #c9d1d9; }
+
+/* Emulated Component Styles */
+.user-card { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-color, #0d1117); border: 1px solid var(--border, #30363d); border-radius: 8px; margin-bottom: 1rem; transition: transform 0.2s; }
+.user-card:hover { transform: translateY(-2px); border-color: var(--accent, #58a6ff); }
+.user-info { display: flex; align-items: center; gap: 1rem; }
+.avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, #58a6ff, #bc8cff); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; }
+.details h4 { margin: 0 0 0.2rem 0; color: #e6edf3; }
+.details p { margin: 0; color: #8b949e; font-size: 0.9rem; }
+.btn-action { background: transparent; border: 1px solid var(--accent, #58a6ff); color: var(--accent, #58a6ff); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-weight: bold; }
+.btn-action:hover { background: rgba(88, 166, 255, 0.1); }
+</style>
+
+<div class="lesson-container">
+  <h2>Pages vs Components in MVC</h2>
+  <p class="lesson-intro">In ASP.NET Core MVC, a "Page" corresponds to a Controller Action and a Razor View, while a "Component" can be implemented as a Partial View or ViewComponent.</p>
+
+  <div class="example-card">
+    <h3>The Conceptual Difference</h3>
+    <p class="explanation">
+      <strong>A View (Smart Component):</strong> Is attached to a Route (via Controller). It handles layout and logic.<br><br>
+      <strong>A Partial View / ViewComponent (Dumb Component):</strong> Is reusable UI. It receives data via models and can emit events via JavaScript.
+    </p>
+    
+    <div class="demo-box" style="margin-top: 20px;">
+      <h3 style="color: white; margin-bottom: 1rem;">Meet the Team</h3>
+      
+      <div id="team-list">
+        <!-- Reusable Component Mockups -->
+      </div>
+
+      <div class="status-bar" id="status-bar" style="display: none;">
+        <span style="font-size: 1.2rem;">💬</span> <span id="last-action"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    const teamMembers = [
+        { name: "Alice", role: "Frontend Dev", init: "AL" },
+        { name: "Bob", role: "Backend Dev", init: "BO" },
+        { name: "Charlie", role: "Designer", init: "CH" }
+    ];
+
+    function handleMessage(name) {
+        const statusBar = document.getElementById('status-bar');
+        const lastAction = document.getElementById('last-action');
+        statusBar.style.display = 'block';
+        lastAction.innerText = `Sent message to ${name}`;
+    }
+
+    function renderTeam() {
+        const list = document.getElementById('team-list');
+        teamMembers.forEach(member => {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            card.innerHTML = `
+                <div class="user-info">
+                    <div class="avatar">${member.init}</div>
+                    <div class="details">
+                        <h4>${member.name}</h4>
+                        <p>${member.role}</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="handleMessage('${member.name}')">Message</button>
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    renderTeam();
+</script>
+}

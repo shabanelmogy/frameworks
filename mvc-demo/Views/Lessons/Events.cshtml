@@ -1,0 +1,104 @@
+@{
+    ViewData["Title"] = "Events";
+}
+
+<style>
+.lesson-container { max-width: 900px; margin: 0 auto; padding-bottom: 3rem; }
+.lesson-intro { margin-bottom: 2rem; color: #8b949e; font-size: 1.1rem; }
+.example-card { background: var(--card-bg, #21262d); border: 1px solid var(--border, #30363d); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+.example-card h3 { margin-top: 0; color: #e6edf3; }
+.explanation { color: #8b949e; line-height: 1.5; margin-bottom: 1rem; }
+.demo-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border, #30363d); border-radius: 6px; padding: 1.5rem; transition: background-color 0.3s; }
+code { background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px; color: #e6edf3; font-family: monospace; }
+.btn { background: #238636; border: 1px solid rgba(240,246,252,0.1); color: #fff; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.input-field { background: #0d1117; border: 1px solid var(--border); color: #c9d1d9; padding: 0.5rem; border-radius: 6px; width: 200px; margin-right: 10px; }
+.badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 2rem; font-size: 0.85rem; font-weight: bold; background: #30363d; color: #fff; }
+.success-message { color: #2ea043; margin-top: 5px; font-weight: bold; }
+</style>
+
+<div class="lesson-container">
+  <h2>Event Listeners in MVC (JS)</h2>
+  <p class="lesson-intro">In MVC, you bind to DOM events using standard HTML event attributes like <code>onclick="method()"</code> or <code>addEventListener</code> in JavaScript.</p>
+
+  <div class="example-card">
+    <h3>1. Basic Click Event <code>onclick</code></h3>
+    <div class="demo-box">
+      <button class="btn" onclick="onButtonClick()">Click Me!</button>
+      <p>You clicked the button: <strong id="click-count">0</strong> times.</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>2. Passing the Event Object <code>event</code></h3>
+    <div class="demo-box">
+      <p>Type below to see the last key pressed:</p>
+      <input type="text" class="input-field" onkeyup="onKeyup(event)" placeholder="Type something..." />
+      <p>Last key: <span class="badge" id="last-key">-</span></p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>3. Key Modifiers (Enter)</h3>
+    <div class="demo-box">
+      <p>Type a message and press Enter to save:</p>
+      <input type="text" id="enter-input" class="input-field" onkeyup="onEnterPress(event)" placeholder="Press Enter to save..." />
+      <div id="saved-message" class="success-message" style="display:none;">Saved: <span></span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>4. Mouse Events <code>onmouseenter / onmouseleave</code></h3>
+    <div class="demo-box" id="hover-box" onmouseenter="onMouseEnter()" onmouseleave="onMouseLeave()">
+      <p style="text-align: center; margin: 10px 0; font-weight: bold;" id="hover-status">Hover over me!</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>5. Form Events <code>onfocus / onblur / oninput</code></h3>
+    <div class="demo-box">
+      <input type="text" class="input-field" onfocus="onFocus()" onblur="onBlur()" oninput="onInput(event)" placeholder="Interact with me..." />
+      <p>Status: <span class="badge" id="focus-status">Blurred</span></p>
+      <p>Current Value: <strong id="input-value"></strong></p>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    let clicks = 0;
+    function onButtonClick() {
+        clicks++;
+        document.getElementById('click-count').innerText = clicks;
+    }
+
+    function onKeyup(e) {
+        document.getElementById('last-key').innerText = e.key;
+    }
+
+    function onEnterPress(e) {
+        if (e.key === 'Enter') {
+            const input = document.getElementById('enter-input');
+            const savedBox = document.getElementById('saved-message');
+            savedBox.querySelector('span').innerText = input.value;
+            savedBox.style.display = 'block';
+            input.value = '';
+        }
+    }
+
+    const hoverBox = document.getElementById('hover-box');
+    const hoverStatus = document.getElementById('hover-status');
+    function onMouseEnter() {
+        hoverBox.style.backgroundColor = '#1f6feb';
+        hoverStatus.innerText = 'Mouse is inside!';
+    }
+    function onMouseLeave() {
+        hoverBox.style.backgroundColor = 'rgba(0,0,0,0.2)';
+        hoverStatus.innerText = 'Hover over me!';
+    }
+
+    const focusStatus = document.getElementById('focus-status');
+    function onFocus() { focusStatus.innerText = 'Focused'; focusStatus.style.backgroundColor = '#238636'; }
+    function onBlur() { focusStatus.innerText = 'Blurred'; focusStatus.style.backgroundColor = '#30363d'; }
+    function onInput(e) { document.getElementById('input-value').innerText = e.target.value; }
+</script>
+}

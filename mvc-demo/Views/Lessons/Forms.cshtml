@@ -1,0 +1,143 @@
+@{
+    ViewData["Title"] = "Forms";
+}
+
+<style>
+.lesson-container { max-width: 900px; margin: 0 auto; padding-bottom: 3rem; }
+.lesson-intro { margin-bottom: 2rem; color: #8b949e; font-size: 1.1rem; }
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.example-card { background: var(--card-bg, #21262d); border: 1px solid var(--border, #30363d); border-radius: 8px; padding: 1.5rem; }
+.example-card h3 { margin-top: 0; color: #e6edf3; border-bottom: 1px solid #30363d; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.explanation { color: #8b949e; line-height: 1.5; margin-bottom: 1rem; }
+.demo-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border, #30363d); border-radius: 6px; padding: 1.5rem; }
+code { background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px; color: #e6edf3; font-family: monospace; }
+.form-group { margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.form-group label { color: #c9d1d9; font-weight: bold; font-size: 0.9rem; }
+.input-field { background: #0d1117; border: 1px solid var(--border); color: #c9d1d9; padding: 0.75rem; border-radius: 6px; font-family: inherit; font-size: 1rem; transition: border-color 0.2s; }
+.input-field:focus { outline: none; border-color: var(--accent, #58a6ff); }
+.error-border { border-color: #f85149 !important; }
+.error-message { color: #f85149; font-size: 0.85rem; margin-top: 0.25rem; }
+.btn { background: #238636; border: 1px solid rgba(240,246,252,0.1); color: #fff; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: background-color 0.2s; width: 100%; margin-top: 1rem; }
+.btn:hover { background: #2ea043; }
+.btn-danger { background: transparent; border: 1px solid #f85149; color: #f85149; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-weight: bold; }
+.btn-danger:hover { background: rgba(248, 81, 73, 0.1); }
+</style>
+
+<div class="lesson-container">
+  <h2>Forms & Local Storage in MVC</h2>
+  <p class="lesson-intro">
+    In MVC, forms can be built using standard HTML forms and handled via JS, or submitted to a Controller action. This demo uses Vanilla JS to emulate Angular's Template-driven form behavior and saves to Local Storage.
+  </p>
+
+  <div class="grid-container">
+    <!-- Form Card -->
+    <div class="example-card">
+      <h3>User Profile Form</h3>
+      <form id="profile-form" novalidate onsubmit="handleSubmit(event)">
+
+        <!-- Username Input -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" class="input-field" required minlength="3" placeholder="Enter username" oninput="validateInput(this)" />
+          <span class="error-message" id="username-error" style="display: none;">Username must be at least 3 characters.</span>
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" class="input-field" required pattern="[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" placeholder="name@example.com" oninput="validateInput(this)" />
+          <span class="error-message" id="email-error" style="display: none;">Email address is invalid.</span>
+        </div>
+
+        <!-- Role Select -->
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" name="role" class="input-field">
+            <option value="Developer">Developer</option>
+            <option value="Designer">Designer</option>
+            <option value="Product Manager">Product Manager</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn">Save Profile</button>
+      </form>
+    </div>
+
+    <!-- Display Local Storage Data -->
+    <div class="example-card">
+      <h3>Local Storage State</h3>
+      <p class="explanation">
+        Data currently stored in key: <code>mvc_user_profile</code>
+      </p>
+
+      <div class="demo-box" id="storage-display">
+        <p style="color: #8b949e; font-style: italic;">No profile data found in Local Storage.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    function validateInput(input) {
+        const errorSpan = document.getElementById(`${input.id}-error`);
+        if (!input.validity.valid && input.value.length > 0) {
+            input.classList.add('error-border');
+            errorSpan.style.display = 'block';
+            return false;
+        } else {
+            input.classList.remove('error-border');
+            errorSpan.style.display = 'none';
+            return input.validity.valid;
+        }
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const role = document.getElementById('role');
+
+        let isValid = validateInput(username) && validateInput(email);
+        
+        // Check empty required
+        if(!username.value) { username.classList.add('error-border'); isValid = false; }
+        if(!email.value) { email.classList.add('error-border'); isValid = false; }
+
+        if (isValid) {
+            const data = {
+                username: username.value,
+                email: email.value,
+                role: role.value
+            };
+            localStorage.setItem('mvc_user_profile', JSON.stringify(data));
+            renderStorage();
+        }
+    }
+
+    function clearStorage() {
+        localStorage.removeItem('mvc_user_profile');
+        renderStorage();
+    }
+
+    function renderStorage() {
+        const data = localStorage.getItem('mvc_user_profile');
+        const display = document.getElementById('storage-display');
+        if (data) {
+            const parsed = JSON.parse(data);
+            display.innerHTML = `
+                <div>
+                  <p><strong>Username:</strong> ${parsed.username}</p>
+                  <p><strong>Email:</strong> ${parsed.email}</p>
+                  <p><strong>Role:</strong> ${parsed.role}</p>
+                  <button onclick="clearStorage()" class="btn-danger" style="margin-top: 10px;">Clear Storage</button>
+                </div>
+            `;
+        } else {
+            display.innerHTML = `<p style="color: #8b949e; font-style: italic;">No profile data found in Local Storage.</p>`;
+        }
+    }
+
+    renderStorage();
+</script>
+}

@@ -168,3 +168,22 @@ code {
 .btn-danger:hover {
   opacity: 0.9;
 }
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color, #0d1117); 
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border, #30363d); 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent, #58a6ff); 
+}

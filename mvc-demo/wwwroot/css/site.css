@@ -1,3 +1,30 @@
+:root {
+  --bg-color: #0d1117;
+  --sidebar-bg: #161b22;
+  --card-bg: #21262d;
+  --border: #30363d;
+  --text-color: #c9d1d9;
+  --accent: #58a6ff;
+  --code-bg: rgba(110, 118, 129, 0.4);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  color: #fff;
+}
+
 .app-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
@@ -96,4 +123,23 @@
   padding: 2rem;
   flex: 1;
   overflow-y: auto;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color, #0d1117); 
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border, #30363d); 
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent, #58a6ff); 
 }

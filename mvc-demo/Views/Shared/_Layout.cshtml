@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - mvc_demo</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/mvc_demo.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Angular Learn</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Roadmap" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Roadmap" ? "active" : "")">
+                            <span class="icon">🗺️</span> Roadmap Hub
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Overview" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Overview" ? "active" : "")">
+                            <span class="icon">📖</span> Overview
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Variables" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Variables" ? "active" : "")">
+                            <span class="icon">📝</span> Variables & Inputs
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Components" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Components" ? "active" : "")">
+                            <span class="icon">🧩</span> Components & Pages
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Directives" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Directives" ? "active" : "")">
+                            <span class="icon">⚡</span> Directives & Bindings
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Forms" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Forms" ? "active" : "")">
+                            <span class="icon">📋</span> Forms & Storage
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Events" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Events" ? "active" : "")">
+                            <span class="icon">🖱️</span> Event Listeners
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Services" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Services" ? "active" : "")">
+                            <span class="icon">🌐</span> Services & HTTP
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Counter" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Counter" ? "active" : "")">
+                            <span class="icon">🔢</span> Signals (Counter)
+                        </a>
+                    </li>
+                    <li style="margin-top: 1rem; border-top: 1px solid #30363d; padding-top: 1rem;">
+                        <span style="padding: 0 1.5rem; color: #8b949e; font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Advanced Topics</span>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Async" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Async" ? "active" : "")">
+                            <span class="icon">⏳</span> Async / RxJS
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="Auth" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "Auth" ? "active" : "")">
+                            <span class="icon">🔐</span> Authentication
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="AdvancedSignals" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "AdvancedSignals" ? "active" : "")">
+                            <span class="icon">🧠</span> Advanced Signals
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Lessons" asp-action="State" class="nav-item @(ViewContext.RouteData.Values["Action"]?.ToString() == "State" ? "active" : "")">
+                            <span class="icon">📦</span> State Management
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Welcome to Angular 18!</h1>
+                <p>Select a lesson from the sidebar to start learning.</p>
+            </header>
+            
+            <div class="content-wrapper">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

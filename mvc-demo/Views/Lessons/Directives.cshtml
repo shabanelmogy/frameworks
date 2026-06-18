@@ -1,0 +1,205 @@
+@{
+    ViewData["Title"] = "Directives";
+}
+
+<style>
+.lesson-container { max-width: 900px; margin: 0 auto; padding-bottom: 3rem; }
+.lesson-intro { margin-bottom: 2rem; color: #8b949e; font-size: 1.1rem; }
+.example-card { background: var(--card-bg, #21262d); border: 1px solid var(--border, #30363d); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+.example-card h3 { margin-top: 0; color: #e6edf3; }
+.explanation { color: #8b949e; line-height: 1.5; margin-bottom: 1rem; }
+.demo-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border, #30363d); border-radius: 6px; padding: 1.5rem; }
+code { background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px; color: #e6edf3; font-family: monospace; }
+hr { border-color: var(--border); margin: 10px 0; }
+.btn-sm { background: #21262d; border: 1px solid var(--border); color: #c9d1d9; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.btn-sm:hover { border-color: #8b949e; }
+.btn { background: #238636; border: 1px solid rgba(240,246,252,0.1); color: #fff; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.btn:hover { background: #2ea043; }
+.input-field { background: #0d1117; border: 1px solid var(--border); color: #c9d1d9; padding: 0.5rem; border-radius: 6px; width: 200px; }
+.badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 2rem; font-size: 0.85rem; font-weight: bold; background: #30363d; color: #fff; }
+.active-btn { background: #238636 !important; border-color: #238636 !important; }
+</style>
+
+<div class="lesson-container">
+  <h2>Directives, Bindings & Pipes</h2>
+  <p class="lesson-intro">
+    Learn how Angular's template features map to standard HTML/JS equivalents in MVC.
+  </p>
+
+  <!-- 1. DIRECTIVES SECTION -->
+  <div class="example-card">
+    <h3>1. Directives (Structural & Attribute)</h3>
+    <p class="explanation">
+      <strong>Angular:</strong> Uses built-in directives like <code>*ngIf</code> for conditional rendering.<br />
+      <strong>MVC:</strong> Uses Razor <code>@@if</code> on the server, or JS logic for client-side toggling.
+    </p>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+      <!-- Conditional Rendering -->
+      <div>
+        <button class="btn-sm" onclick="toggleVisibility()">
+          Toggle Visibility (JS)
+        </button>
+        <p id="visibility-text" style="margin-top: 5px; color: #58a6ff;">✨ Now you see me! (Client-side toggle)</p>
+      </div>
+
+      <hr />
+
+      <!-- List Rendering -->
+      <div>
+        <p style="font-weight: bold;">List Rendering (JS Array mapping):</p>
+        <form onsubmit="addItem(event)" style="display: flex; gap: 10px; margin: 5px 0;">
+          <input type="text" id="new-item-input" class="input-field" style="margin: 0;" placeholder="Add fruit..." />
+          <button type="submit" class="btn" style="margin: 0;">Add</button>
+        </form>
+        <ul id="item-list">
+          <!-- Rendered by JS -->
+        </ul>
+      </div>
+
+      <hr />
+
+      <!-- Custom Attribute Directive -->
+      <div>
+        <p style="font-weight: bold;">Custom Attribute Directive (Highlight on Hover):</p>
+        <div id="hover-div" style="padding: 10px; border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #30363d;">
+          Hover over me to highlight
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BINDINGS SECTION -->
+  <div class="example-card">
+    <h3>2. Property, Class & Style Bindings</h3>
+    
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 15px;">
+      <div>
+        <button id="toggle-class-btn" class="btn" style="border: 1px solid var(--border); margin-right: 10px; background-color: #21262d;" onclick="toggleClass()">
+          Toggle Class: Inactive
+        </button>
+
+        <span class="badge" id="dynamic-badge" style="background-color: #000000;">
+          Dynamic Style Color
+        </span>
+        <input type="color" id="color-picker" onchange="updateColor()" value="#000000" style="vertical-align: middle; margin-left: 10px; cursor: pointer;" />
+      </div>
+
+      <hr />
+
+      <!-- Two-Way Binding -->
+      <div>
+        <p style="font-weight: bold;">Two-Way Binding (Event Listeners):</p>
+        <input type="text" id="two-way-input" class="input-field" oninput="updateTwoWay()" />
+        <p style="font-size: 0.9em; color: #8b949e;">
+          Value in state: <strong id="two-way-display"></strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PIPES/PIPELINES SECTION -->
+  <div class="example-card">
+    <h3>3. Pipes (Pipelines)</h3>
+
+    <div class="demo-box" style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        <p><strong>Input Text:</strong></p>
+        <input type="text" id="pipe-input" class="input-field" oninput="updatePipes()" value="hello world" />
+      </div>
+      <div>
+        <p>Title Case Pipe (JS Function):</p>
+        <span class="badge" id="title-case-display">Hello World</span>
+      </div>
+      <div>
+        <p>Currency Pipe (Intl.NumberFormat):</p>
+        <span class="badge" id="currency-display">$1,234.56</span>
+      </div>
+      <div>
+        <p>Date Pipe (Date.toLocaleDateString):</p>
+        <span class="badge" id="date-display"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+    // Visibility
+    let isVisible = true;
+    function toggleVisibility() {
+        isVisible = !isVisible;
+        const text = document.getElementById('visibility-text');
+        if (isVisible) {
+            text.innerHTML = '✨ Now you see me! (Client-side toggle)';
+            text.style.color = '#58a6ff';
+        } else {
+            text.innerHTML = '💨 Elements removed from DOM.';
+            text.style.color = '#8b949e';
+        }
+    }
+
+    // List
+    let items = ['Apple', 'Banana'];
+    function renderList() {
+        const list = document.getElementById('item-list');
+        list.innerHTML = items.map(item => `<li style="color: #e6edf3;">${item}</li>`).join('');
+    }
+    function addItem(e) {
+        e.preventDefault();
+        const input = document.getElementById('new-item-input');
+        if (input.value) {
+            items.push(input.value);
+            input.value = '';
+            renderList();
+        }
+    }
+    renderList();
+
+    // Hover
+    const hoverDiv = document.getElementById('hover-div');
+    hoverDiv.addEventListener('mouseenter', () => hoverDiv.style.backgroundColor = '#ffd33d');
+    hoverDiv.addEventListener('mouseleave', () => hoverDiv.style.backgroundColor = '#30363d');
+
+    // Toggle Class
+    let isActive = false;
+    function toggleClass() {
+        isActive = !isActive;
+        const btn = document.getElementById('toggle-class-btn');
+        btn.className = isActive ? 'btn active-btn' : 'btn';
+        btn.style.backgroundColor = isActive ? '#238636' : '#21262d';
+        btn.innerText = `Toggle Class: ${isActive ? 'Active' : 'Inactive'}`;
+    }
+
+    // Color
+    function updateColor() {
+        const picker = document.getElementById('color-picker');
+        const badge = document.getElementById('dynamic-badge');
+        badge.style.backgroundColor = picker.value;
+    }
+
+    // Two-Way
+    function updateTwoWay() {
+        const val = document.getElementById('two-way-input').value;
+        document.getElementById('two-way-display').innerText = val;
+    }
+
+    // Pipes
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
+    function updatePipes() {
+        const val = document.getElementById('pipe-input').value;
+        document.getElementById('title-case-display').innerText = toTitleCase(val);
+    }
+    
+    // Initial Render
+    document.getElementById('currency-display').innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(1234.56);
+    document.getElementById('date-display').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+}
